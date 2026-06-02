@@ -56,6 +56,44 @@ h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);lett
 .svgrow .chart{width:1750px;min-width:1750px;flex:none;position:relative;background:var(--surface)}
 .hint{margin-top:14px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted2)}
 .foot{margin-top:24px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted2);line-height:1.7}
+
+
+/* Мобильная адаптация: фиксированный столбец становится уже,
+   чтобы на телефоне оставалось достаточно места для чтения CJM. */
+@media(max-width:720px){
+  .wrap{padding:38px 14px 54px;max-width:none}
+  h1{font-size:clamp(26px,8vw,34px);margin-bottom:18px}
+  .legend{gap:10px 14px;margin-bottom:16px;font-size:10px;line-height:1.35}
+  .lg{width:10px;height:10px;border-radius:3px}
+  .scroll{border-radius:18px;margin-left:0;margin-right:0}
+  .cjm{width:1763px;min-width:1763px}
+  .stage{width:1763px}
+  .lab{width:118px;min-width:118px;padding:14px 10px;font-size:10.5px;line-height:1.25;letter-spacing:-.02em;box-shadow:8px 0 14px rgba(11,12,8,.92),1px 0 0 var(--line)}
+  .stage .lab{box-shadow:8px 0 14px rgba(11,12,8,.55),1px 0 0 rgba(0,0,0,.12)}
+  .cell{width:235px;padding:12px 12px}
+  .stage .cell{font-size:12px;line-height:1.2}
+  .note{font-size:12px;line-height:1.38;padding:9px 10px;border-radius:10px}
+  .flag{font-size:8px;line-height:1.2}
+  .svgrow .chart{width:1645px;min-width:1645px}
+  .svgrow .chart svg{width:1645px;max-width:1645px}
+  .hint{font-size:10.5px;margin-top:12px}
+}
+
+@media(max-width:430px){
+  .wrap{padding:34px 10px 48px}
+  .legend{font-size:9.5px;gap:9px 12px}
+  .scroll{border-radius:17px}
+  .cjm{width:1636px;min-width:1636px}
+  .stage{width:1636px}
+  .lab{width:96px;min-width:96px;padding:12px 8px;font-size:9.4px;line-height:1.22;box-shadow:7px 0 12px rgba(11,12,8,.94),1px 0 0 var(--line)}
+  .stage .lab{box-shadow:7px 0 12px rgba(11,12,8,.58),1px 0 0 rgba(0,0,0,.12)}
+  .cell{width:220px;padding:11px 10px}
+  .stage .cell{font-size:11.2px;line-height:1.18}
+  .note{font-size:11.5px;line-height:1.36;padding:8px 9px;margin-bottom:6px}
+  .svgrow .chart{width:1540px;min-width:1540px}
+  .svgrow .chart svg{width:1540px;max-width:1540px}
+}
+
 </style>
 </head>
 <body>
