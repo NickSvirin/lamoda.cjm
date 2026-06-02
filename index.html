@@ -20,26 +20,28 @@ body{background:var(--bg);color:var(--ink);font-family:'Onest',sans-serif;line-h
 .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
   background:radial-gradient(800px 500px at 90% -8%,rgba(198,241,53,.09),transparent 60%)}
 .wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:54px 28px 70px}
-h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);letter-spacing:-.02em;margin-bottom:12px;line-height:1.04}
+h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);letter-spacing:-.02em;margin-bottom:22px;line-height:1.04}
 .sub{color:var(--muted);font-size:16.5px;max-width:820px;margin-bottom:22px}
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:18px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 .lg{width:12px;height:12px;border-radius:4px}
 
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:22px;background:var(--surface);-webkit-overflow-scrolling:touch}
+.scroll{position:relative;overflow-x:auto;border:1px solid var(--line);border-radius:22px;background:var(--surface);-webkit-overflow-scrolling:touch;overflow-y:hidden}
 .scroll::-webkit-scrollbar{height:11px}
 .scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px}
 .scroll::-webkit-scrollbar-track{background:var(--bg2)}
-.cjm{min-width:1760px}
-.row{display:flex;border-bottom:1px solid var(--line)}
+.cjm{width:1960px;min-width:1960px;position:relative}
+.row{display:flex;border-bottom:1px solid var(--line);position:relative}
 .row:last-child{border-bottom:none}
-.lab{width:210px;flex:none;padding:18px 18px;position:sticky;left:0;z-index:3;
+.lab{width:210px;min-width:210px;flex:none;padding:18px 18px;position:sticky;left:0;z-index:20;
   background:linear-gradient(120deg,#191c11,#11130c);border-right:1px solid var(--line);
+  box-shadow:14px 0 18px rgba(11,12,8,.92),1px 0 0 var(--line);
+  overflow:hidden;isolation:isolate;
   font-family:'Unbounded';font-weight:700;font-size:13px;display:flex;align-items:center}
-.cell{width:250px;flex:none;padding:14px 14px;border-right:1px solid var(--line)}
+.cell{width:250px;flex:none;padding:14px 14px;border-right:1px solid var(--line);position:relative;z-index:1}
 .cell:last-child{border-right:none}
-.stage{background:linear-gradient(135deg,var(--lime),var(--lime-dim))}
-.stage .lab{background:transparent;color:#0b0c08;border-right:1px solid rgba(0,0,0,.12)}
+.stage{background:linear-gradient(135deg,var(--lime),var(--lime-dim));width:1960px}
+.stage .lab{z-index:30;background:linear-gradient(135deg,var(--lime),var(--lime-dim));color:#0b0c08;border-right:1px solid rgba(0,0,0,.12);box-shadow:14px 0 18px rgba(11,12,8,.55),1px 0 0 rgba(0,0,0,.12)}
 .stage .cell{color:#0b0c08;border-right:1px solid rgba(0,0,0,.12);font-family:'Unbounded';font-weight:800;font-size:13.5px;display:flex;align-items:center;line-height:1.15}
 .note{font-size:12.5px;line-height:1.42;border-radius:11px;padding:10px 11px;margin-bottom:7px}
 .note:last-child{margin-bottom:0}
@@ -51,7 +53,7 @@ h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);lett
 .note.rec{background:var(--teal-bg);border:1px solid #155047;color:#a6f3e6}
 .flag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--pain);background:rgba(255,90,77,.12);border:1px solid #5a241f;border-radius:6px;padding:2px 6px;margin-bottom:6px;text-transform:uppercase}
 .svgrow{display:flex;align-items:stretch}
-.svgrow .chart{flex:1;position:relative;min-width:1550px}
+.svgrow .chart{width:1750px;min-width:1750px;flex:none;position:relative;background:var(--surface)}
 .hint{margin-top:14px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted2)}
 .foot{margin-top:24px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted2);line-height:1.7}
 </style>
@@ -60,8 +62,6 @@ h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);lett
 <div class="grain"></div>
 <div class="wrap">
   <h1>Карта пути клиента</h1>
-  <p class="sub">Полный путь «Доставки с примеркой» — от выбора товара до возврата отказов на склад. Семь стадий, разложенные по действиям, точкам контакта, целям, эмоциям, важности момента и опыту клиента. Красным отмечены две ключевые точки разрыва.</p>
-
   <div class="legend">
     <span><span class="lg" style="background:#26210a;border:1px solid #4a4118"></span>Действия</span>
     <span><span class="lg" style="background:var(--surface2);border:1px solid var(--line)"></span>Точки контакта</span>
@@ -243,9 +243,6 @@ h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);lett
   </div>
   <p class="hint">→ карту можно прокручивать вправо, чтобы увидеть все семь стадий</p>
 
-  <div class="foot">
-    Карта построена на основе персоны и пяти глубинных интервью. Процесс «как есть» и персона — в отдельных файлах.
-  </div>
 </div>
 </body>
 </html>
