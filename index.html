@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карта пути клиента · Доставка с примеркой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Onest:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0c08;--bg2:#13150d;--surface:#15170f;--surface2:#1c1f15;
+  --line:#2a2e20;--lime:#c6f135;--lime-dim:#9bc41f;--ink:#f4f6ec;
+  --muted:#9aa085;--muted2:#6f7560;
+  --pain:#ff5a4d;--pain-bg:#2a1512;--good:#8fe04a;--good-bg:#16210d;
+  --teal:#34e0c4;--teal-bg:#0e231f;--warn:#ffb020;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Onest',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(800px 500px at 90% -8%,rgba(198,241,53,.09),transparent 60%)}
+.wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:54px 28px 70px}
+h1{font-family:'Unbounded';font-weight:800;font-size:clamp(28px,4.4vw,46px);letter-spacing:-.02em;margin-bottom:12px;line-height:1.04}
+.sub{color:var(--muted);font-size:16.5px;max-width:820px;margin-bottom:22px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:18px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.lg{width:12px;height:12px;border-radius:4px}
+
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:22px;background:var(--surface);-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{height:11px}
+.scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px}
+.scroll::-webkit-scrollbar-track{background:var(--bg2)}
+.cjm{min-width:1760px}
+.row{display:flex;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.lab{width:210px;flex:none;padding:18px 18px;position:sticky;left:0;z-index:3;
+  background:linear-gradient(120deg,#191c11,#11130c);border-right:1px solid var(--line);
+  font-family:'Unbounded';font-weight:700;font-size:13px;display:flex;align-items:center}
+.cell{width:250px;flex:none;padding:14px 14px;border-right:1px solid var(--line)}
+.cell:last-child{border-right:none}
+.stage{background:linear-gradient(135deg,var(--lime),var(--lime-dim))}
+.stage .lab{background:transparent;color:#0b0c08;border-right:1px solid rgba(0,0,0,.12)}
+.stage .cell{color:#0b0c08;border-right:1px solid rgba(0,0,0,.12);font-family:'Unbounded';font-weight:800;font-size:13.5px;display:flex;align-items:center;line-height:1.15}
+.note{font-size:12.5px;line-height:1.42;border-radius:11px;padding:10px 11px;margin-bottom:7px}
+.note:last-child{margin-bottom:0}
+.note.act{background:#26210a;border:1px solid #4a4118;color:#f0e6b8}
+.note.touch{background:var(--surface2);border:1px solid var(--line);color:var(--muted)}
+.note.goal{background:#10130d;border:1px solid var(--line);color:#c5cbb2}
+.note.good{background:var(--good-bg);border:1px solid #2c4717;color:#cdebb0}
+.note.pain{background:var(--pain-bg);border:1px solid #5a241f;color:#ffc9c2}
+.note.rec{background:var(--teal-bg);border:1px solid #155047;color:#a6f3e6}
+.flag{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--pain);background:rgba(255,90,77,.12);border:1px solid #5a241f;border-radius:6px;padding:2px 6px;margin-bottom:6px;text-transform:uppercase}
+.svgrow{display:flex;align-items:stretch}
+.svgrow .chart{flex:1;position:relative;min-width:1550px}
+.hint{margin-top:14px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted2)}
+.foot{margin-top:24px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted2);line-height:1.7}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+  <h1>Карта пути клиента</h1>
+  <p class="sub">Полный путь «Доставки с примеркой» — от выбора товара до возврата отказов на склад. Семь стадий, разложенные по действиям, точкам контакта, целям, эмоциям, важности момента и опыту клиента. Красным отмечены две ключевые точки разрыва.</p>
+
+  <div class="legend">
+    <span><span class="lg" style="background:#26210a;border:1px solid #4a4118"></span>Действия</span>
+    <span><span class="lg" style="background:var(--surface2);border:1px solid var(--line)"></span>Точки контакта</span>
+    <span><span class="lg" style="background:#10130d;border:1px solid var(--line)"></span>Цели</span>
+    <span><span class="lg" style="background:var(--good-bg);border:1px solid #2c4717"></span>Что радует</span>
+    <span><span class="lg" style="background:var(--pain-bg);border:1px solid #5a241f"></span>Боль / разрыв</span>
+    <span><span class="lg" style="background:var(--teal-bg);border:1px solid #155047"></span>Что предложить</span>
+  </div>
+
+  <div class="scroll">
+    <div class="cjm">
+
+      <div class="row stage">
+        <div class="lab">Стадия</div>
+        <div class="cell">1 · Выбор и заказ</div>
+        <div class="cell">2 · Ожидание и планы</div>
+        <div class="cell">3 · День доставки · звонок</div>
+        <div class="cell">4 · Встреча курьера</div>
+        <div class="cell">5 · Примерка</div>
+        <div class="cell">6 · Решение и выкуп</div>
+        <div class="cell">7 · Возврат на склад</div>
+      </div>
+
+      <div class="row">
+        <div class="lab">Действия клиента</div>
+        <div class="cell">
+          <div class="note act">Листает каталог, добавляет вещи в корзину</div>
+          <div class="note act">Не уверен в размере — кладёт один артикул в 2–3 размерах</div>
+          <div class="note act">Оформляет заказ с примеркой</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Выбирает дату доставки из доступных слотов</div>
+          <div class="note act">Ждёт; в течение недели планы меняются</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Получает звонок курьера за 30 минут</div>
+          <div class="note act">Подтверждает, просит перенести или отменяет</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Встречает курьера, забирает пакет</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Меряет вещи дома при курьере, до 15 минут</div>
+          <div class="note act">Сравнивает размеры между собой</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Решает, что оставить</div>
+          <div class="note act">Отказывается примерно от половины, оплачивает выкуп</div>
+        </div>
+        <div class="cell">
+          <div class="note act">Отдаёт отказы курьеру</div>
+          <div class="note act">Ждёт возврата средств и закрытия заказа</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="lab">Точки контакта</div>
+        <div class="cell"><div class="note touch">Приложение и сайт Lamoda · карточка товара · корзина</div></div>
+        <div class="cell"><div class="note touch">Экран выбора даты · уведомления · раздел «Мои заказы»</div></div>
+        <div class="cell"><div class="note touch">Телефонный звонок курьера · сообщения о статусе</div></div>
+        <div class="cell"><div class="note touch">Курьер · фирменный пакет · автомобиль</div></div>
+        <div class="cell"><div class="note touch">Сам товар · курьер · отсчёт времени примерки</div></div>
+        <div class="cell"><div class="note touch">Терминал оплаты у курьера · приложение · чек</div></div>
+        <div class="cell"><div class="note touch">Курьер · уведомление о возврате · банк</div></div>
+      </div>
+
+      <div class="row">
+        <div class="lab">Цели и ожидания</div>
+        <div class="cell"><div class="note goal">Найти вещь, которая точно подойдёт; не ошибиться с размером</div></div>
+        <div class="cell"><div class="note goal">Получить заказ тогда, когда удобно</div></div>
+        <div class="cell"><div class="note goal">Успеть подстроить день под доставку</div></div>
+        <div class="cell"><div class="note goal">Быстро и без ожидания забрать заказ</div></div>
+        <div class="cell"><div class="note goal">Спокойно понять, что сидит хорошо</div></div>
+        <div class="cell"><div class="note goal">Оставить нужное, без чувства вины и переплаты</div></div>
+        <div class="cell"><div class="note goal">Быстро вернуть деньги за отказы</div></div>
+      </div>
+
+      <div class="row svgrow">
+        <div class="lab">Эмоции</div>
+        <div class="chart">
+          <svg viewBox="0 0 1760 230" width="1760" height="230" preserveAspectRatio="none" style="display:block">
+            <polyline points="125,80 375,120 625,175 875,120 1125,115 1375,175 1635,120"
+              fill="none" stroke="#3a3f2c" stroke-width="2" stroke-dasharray="4 6"/>
+            <g font-family="Unbounded" font-size="22" text-anchor="middle">
+              <text x="125" y="88">🙂</text>
+              <text x="375" y="128">😐</text>
+              <text x="625" y="183" fill="#ff5a4d">🙁</text>
+              <text x="875" y="128">😐</text>
+              <text x="1125" y="123">🙂</text>
+              <text x="1375" y="183" fill="#ff5a4d">🙁</text>
+              <text x="1635" y="128">😐</text>
+            </g>
+            <g font-family="JetBrains Mono" font-size="11" fill="#6f7560" text-anchor="middle">
+              <text x="125" y="115">приятно выбирать</text>
+              <text x="375" y="155">слот неудобный</text>
+              <text x="625" y="210" fill="#ff8a80">звонок слишком поздно</text>
+              <text x="875" y="155">наконец-то дома</text>
+              <text x="1125" y="150">надежда и волнение</text>
+              <text x="1375" y="210" fill="#ff8a80">отказ, неловкость</text>
+              <text x="1635" y="155">облегчение</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="row svgrow">
+        <div class="lab">Важность момента</div>
+        <div class="chart">
+          <svg viewBox="0 0 1760 120" width="1760" height="120" preserveAspectRatio="none" style="display:block">
+            <polyline points="125,78 375,78 625,32 875,55 1125,32 1375,32 1635,95"
+              fill="none" stroke="#3a3f2c" stroke-width="2"/>
+            <g>
+              <circle cx="125" cy="78" r="8" fill="#ffb020"/>
+              <circle cx="375" cy="78" r="8" fill="#ffb020"/>
+              <circle cx="625" cy="32" r="9" fill="#ff5a4d"/>
+              <circle cx="875" cy="55" r="8" fill="#ffb020"/>
+              <circle cx="1125" cy="32" r="9" fill="#ff5a4d"/>
+              <circle cx="1375" cy="32" r="9" fill="#ff5a4d"/>
+              <circle cx="1635" cy="95" r="8" fill="#8fe04a"/>
+            </g>
+            <g font-family="JetBrains Mono" font-size="11" fill="#6f7560" text-anchor="middle">
+              <text x="125" y="105">средняя</text>
+              <text x="375" y="105">средняя</text>
+              <text x="625" y="58" fill="#ff8a80">высокая</text>
+              <text x="875" y="82">средняя</text>
+              <text x="1125" y="58" fill="#ff8a80">высокая</text>
+              <text x="1375" y="58" fill="#ff8a80">высокая</text>
+              <text x="1635" y="115">низкая</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="lab">Опыт клиента</div>
+        <div class="cell">
+          <div class="note good">Богатый каталог, удобный поиск, фильтры по размеру</div>
+          <div class="flag">⚠ боль №1 · корень</div>
+          <div class="note pain">Невозможно понять, как сядет на свою фигуру — заказ 2–3 размеров «на всякий случай»</div>
+        </div>
+        <div class="cell">
+          <div class="note good">Понятный статус заказа в приложении</div>
+          <div class="note pain">Слоты на неделю вперёд не совпадают с реальным днём; нет гибкости</div>
+        </div>
+        <div class="cell">
+          <div class="flag">⚠ боль №2</div>
+          <div class="note pain">Звонок за 30 минут — слишком поздно, чтобы перестроить день</div>
+          <div class="note pain">Перенос внутри дня (5%), на завтра (10%) или отмена</div>
+        </div>
+        <div class="cell">
+          <div class="note good">Курьер вежлив, доставка домой без похода в пункт выдачи</div>
+        </div>
+        <div class="cell">
+          <div class="note good">Примерка дома — ключевая ценность сервиса</div>
+          <div class="note pain">Стресс из-за 15 минут; решение принимается на эмоциях</div>
+        </div>
+        <div class="cell">
+          <div class="flag">⚠ боль №1 · проявление</div>
+          <div class="note pain">Около половины позиций возвращается; неловкость перед курьером; риск платной доставки при малом выкупе</div>
+        </div>
+        <div class="cell">
+          <div class="note good">Возврат на месте, без бюрократии</div>
+          <div class="note pain">Курьер весь день возит «лишний» товар; вечерний возврат на склад</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="lab">Что предложить</div>
+        <div class="cell"><div class="note rec">Примерка по фото в личном кабинете — точный подбор размера и образ на своей фигуре до заказа</div></div>
+        <div class="cell"><div class="note rec">Перейти от «слота заранее» к доставке в удобный момент</div></div>
+        <div class="cell"><div class="note rec">Заменить звонок за 30 минут вызовом курьера по кнопке, когда клиент готов</div></div>
+        <div class="cell"><div class="note rec">Сохранить вежливый личный контакт как сильную сторону</div></div>
+        <div class="cell"><div class="note rec">Снять напряжение примерки: образ уже знаком клиенту по примерке в приложении</div></div>
+        <div class="cell"><div class="note rec">Меньше лишних размеров на входе — выше выкуп и меньше неловкости</div></div>
+        <div class="cell"><div class="note rec">Меньше «лишнего» товара в машине — выше плотность маршрута</div></div>
+      </div>
+
+    </div>
+  </div>
+  <p class="hint">→ карту можно прокручивать вправо, чтобы увидеть все семь стадий</p>
+
+  <div class="foot">
+    Карта построена на основе персоны и пяти глубинных интервью. Процесс «как есть» и персона — в отдельных файлах.
+  </div>
+</div>
+</body>
+</html>
